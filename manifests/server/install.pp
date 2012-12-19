@@ -2,16 +2,17 @@ class dns::server::install {
 
   case $operatingsystem {
     centos, redhat: {
-      $package_name = 'bind'
+      package { 'bind9':
+        name => ['bind','bind-utils'],
+        ensure => latest,
+      }
     }
     ubuntu, debian: {
-      $package_name = 'bind9'
+      package { 'bind9':
+        name => ['bind9','bind9utils'],
+        ensure => latest,
+      }
     }
-  }
-
-  package { 'bind9':
-    name => $package_name,
-    ensure => latest,
   }
 
 }

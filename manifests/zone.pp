@@ -24,7 +24,7 @@ define dns::zone (
     default => $name
   }
 
-  $zone_file = "/etc/bind/db.${name}"
+  $zone_file = "${$bind_conf_dir}/db.${name}"
 
   if $ensure == absent {
     file { $zone_file:
@@ -33,9 +33,9 @@ define dns::zone (
     } else {
       # Zone Database
       concat { $zone_file:
-        owner   => 'bind',
-        group   => 'bind',
-        mode    => '0644',
+        owner   => $bind_user_name,
+        group   => $bind_user_name,
+        mode    => 0644,
         require => [Class['concat::setup'], Class['dns::server']],
         notify  => Class['dns::server::service']
       }
@@ -49,7 +49,7 @@ define dns::zone (
     # Include Zone in named.conf.local
     concat::fragment{"named.conf.local.${name}.include":
       ensure  => $ensure,
-      target  => '/etc/bind/named.conf.local',
+      target  => '${$bind_conf_dir}/named.conf.local',
       order   => 2,
       content => template("${module_name}/zone.erb")
     }
