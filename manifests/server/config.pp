@@ -12,6 +12,11 @@ class dns::server::config {
     owner   => $::dns::user_name,
     group   => $::dns::user_name,
     mode    => 0644,
+    source => [
+      "puppet://modules/site_dns/$fqdn/named.conf",
+      "puppet://moduels/site_dns/named.conf",
+      "puppet://modules/dns/named.conf",
+    ],
     require => [File["${::dns::conf_dir}"], Class['dns::server::install']],
     notify  => Class['dns::server::service'],
   }
