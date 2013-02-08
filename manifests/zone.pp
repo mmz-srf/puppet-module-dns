@@ -8,23 +8,16 @@ define dns::zone (
   $zone_expire = '2419200',
   $zone_minimum = '604800',
   $nameservers = [ $::fqdn ],
-  $reverse = false,
   $zone_type = 'master',
   $zone_notify = false,
   $ensure = present
 ) {
-
+  $zone = $name
+  $zone_file = "${::dns::conf_dir}/db.${name}"
   $zone_serial = $serial ? {
     false   => inline_template('<%= Time.now.to_i %>'),
     default => $serial
   }
-
-  $zone = $reverse ? {
-    true    => "${name}.in-addr.arpa",
-    default => $name
-  }
-
-  $zone_file = "${::dns::conf_dir}/db.${name}"
 
   if $ensure == absent {
     file { $zone_file:
