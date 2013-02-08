@@ -1,5 +1,7 @@
 class dns::params {
 
+  $named_conf = 'modules/dns/named.conf.erb'
+
   case $operatingsystem {
     centos, redhat: {
       # use top scope variable if it's defined, fallback to hardcoded value
