@@ -1,7 +1,7 @@
 class dns::server::service {
 
   service { 'bind9':
-    name       => $bind_service_name,
+    name       => $::dns::service_name,
     ensure     => running,
     hasstatus  => true,
     hasrestart => true,
