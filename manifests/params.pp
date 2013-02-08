@@ -1,6 +1,6 @@
 class dns::params {
 
-  $named_conf = 'modules/dns/named.conf.erb'
+  $named_conf = 'dns/named.conf.erb'
 
   case $operatingsystem {
     centos, redhat: {
