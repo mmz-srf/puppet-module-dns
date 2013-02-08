@@ -1,5 +1,5 @@
 class dns::server {
-  include dns::server::install
-  include dns::server::config
-  include dns::server::service
+  class{'::dns::server::install':}->
+  class{'::dns::server::config':}~>
+  class{'::dns::server::service':}
 }
