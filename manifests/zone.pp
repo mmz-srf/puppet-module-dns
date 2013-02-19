@@ -29,7 +29,7 @@ define dns::zone (
       owner   => $::dns::user_name, 
       group   => $::dns::user_name,
       mode    => 0644,
-      require => [Class['concat::setup'], Class['dns::server']],
+      require => [Class['concat::setup'], Class['dns::server::install']],
       notify  => Class['dns::server::service']
     }
     concat::fragment{"db.${name}.soa":

@@ -25,7 +25,7 @@ class dns::server::config {
     group   => $::dns::user_name,
     mode    => 0644,
     require => Class['concat::setup'],
-    notify  => Class['dns::server::service']
+    notify  => Class['dns::server::install']
   }
 
   concat::fragment{'named.conf.local.header':
