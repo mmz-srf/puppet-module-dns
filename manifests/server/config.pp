@@ -5,6 +5,7 @@ class dns::server::config {
     owner  => $::dns::user_name,
     group  => $::dns::user_name,
     mode   => 0755,
+    require => Class['dns::server::install'],
   }
 
   file { "${::dns::conf_dir}/named.conf":
@@ -13,10 +14,7 @@ class dns::server::config {
     group   => $::dns::user_name,
     mode    => 0644,
     content => template($::dns::named_conf),
-    require => [
-      File["${::dns::conf_dir}"],
-      Class['dns::server::install'],
-    ],
+    require => File["${::dns::conf_dir}"],
     notify  => Class['dns::server::service'],
   }
 
@@ -24,8 +22,11 @@ class dns::server::config {
     owner   => $::dns::user_name,
     group   => $::dns::user_name,
     mode    => 0644,
-    require => Class['concat::setup'],
-    notify  => Class['dns::server::install']
+    require => [
+      Class['concat::setup'],
+      Class['dns::server::install'],
+    ],
+    notify  => Class['dns::server::service']
   }
 
   concat::fragment{'named.conf.local.header':
