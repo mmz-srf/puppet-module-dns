@@ -1,6 +1,6 @@
 class dns::params {
 
-  $named_conf = 'dns/named.conf.erb'
+  $named_conf_template = 'dns/named.conf.erb'
 
   case $operatingsystem {
     centos, redhat: {
@@ -17,6 +17,14 @@ class dns::params {
         undef   => '/etc/named',
         default => $::dns_conf_dir,
       }
+      $named_conf = $::dns_named_conf ? {
+        undef   => '/etc/named.conf',
+        default => $::dns_named_conf,
+      }
+      $named_conf_local = $::dns_named_conf_local ? {
+        undef   => '/etc/named.conf.local',
+        default => $::dns_named_conf_local,
+      }
     }
     ubuntu, debian: {
       $service_name = $::dns_service_name ? {
@@ -30,6 +38,14 @@ class dns::params {
       $conf_dir = $::dns_conf_dir ? {
         undef   => '/etc/bind',
         default => $::dns_conf_dir,
+      }
+      $named_conf = $::dns_named_conf ? {
+        undef   => "${conf_dir}/named.conf",
+        default => $::dns_named_conf,
+      }
+      $named_conf_local = $::dns_named_conf_local ? {
+        undef   => "${conf_dir}/named.conf.local",
+        default => $::dns_named_conf_local,
       }
     }
   }

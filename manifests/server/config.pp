@@ -8,17 +8,17 @@ class dns::server::config {
     require => Class['dns::server::install'],
   }
 
-  file { "${::dns::conf_dir}/named.conf":
+  file { $::dns::named_conf:
     ensure  => present,
     owner   => $::dns::user_name,
     group   => $::dns::user_name,
     mode    => 0644,
-    content => template($::dns::named_conf),
+    content => template($::dns::named_conf_template),
     require => File["${::dns::conf_dir}"],
     notify  => Class['dns::server::service'],
   }
 
-  concat { "${::dns::conf_dir}/named.conf.local":
+  concat { $dns::named_conf_local:
     owner   => $::dns::user_name,
     group   => $::dns::user_name,
     mode    => 0644,
@@ -31,7 +31,7 @@ class dns::server::config {
 
   concat::fragment{'named.conf.local.header':
     ensure  => present,
-    target  => "${::dns::conf_dir}/named.conf.local",
+    target  => $dns::named_conf_local,
     order   => 1,
     content => "// File managed by Puppet.\n"
   }
