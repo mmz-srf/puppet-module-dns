@@ -20,7 +20,7 @@ class dns::server::config {
 
   case $operatingsystem {
     ubunut, debian: {
-      file{ $::dns::named:conf_options:
+      file{ $::dns::named_conf_options:
         ensure  => present,
         owner   => $::dns::user_name,
         group   => $::dns::user_name,
