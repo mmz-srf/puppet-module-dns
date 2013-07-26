@@ -1,7 +1,5 @@
 class dns::params {
 
-  $named_conf_template = 'dns/named.conf.erb'
-
   case $operatingsystem {
     centos, redhat: {
       # use top scope variable if it's defined, fallback to hardcoded value
@@ -21,9 +19,21 @@ class dns::params {
         undef   => '/etc/named.conf',
         default => $::dns_named_conf,
       }
+      $named_conf_template = $::dns_named_conf_template ? {
+        undef   => 'dns/redhat/named.conf.erb',
+        default => $::dns_named_conf_template,
+      }
       $named_conf_local = $::dns_named_conf_local ? {
         undef   => '/etc/named.conf.local',
         default => $::dns_named_conf_local,
+      }
+      $named_conf_options = $::dns_named_conf_options ? {
+        undef   => '/etc/redhat/named.conf.options',
+        default => $::dns_named_conf_options,
+      }
+      $named_conf_options_template = $::dns_named_conf_options_template ? {
+        undef   => 'dns/redhat/named.conf.options.erb',
+        default => $::dns_named_conf_options_template,
       }
     }
     ubuntu, debian: {
@@ -43,9 +53,21 @@ class dns::params {
         undef   => "${conf_dir}/named.conf",
         default => $::dns_named_conf,
       }
+      $named_conf_template = $::dns_named_conf_template ? {
+        undef   => 'dns/debian/named.conf.erb',
+        default => $::dns_named_conf_template,
+      }
       $named_conf_local = $::dns_named_conf_local ? {
         undef   => "${conf_dir}/named.conf.local",
         default => $::dns_named_conf_local,
+      }
+      $named_conf_options = $::dns_named_conf_options ? {
+        undef   => "${conf_dir}/named.conf.options",
+        default => $::dns_named_conf_options,
+      }
+      $named_conf_options_template = $::dns_named_conf_options_template ? {
+        undef   => 'dns/debian/named.conf.options.erb',
+        default => $::dns_named_conf_options_template,
       }
     }
   }
