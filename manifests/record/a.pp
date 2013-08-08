@@ -17,12 +17,12 @@ define dns::record::a (
   }
 
   if $ptr {
-    $ip = inline_template('<%= data.kind_of?(Array) ? data.first : data %>')
-    $reverse_zone = ip_to_arpa($ip, $netmask)
-    $octet = inline_template('<%= ip.split(".")[-1] %>')
+    $ip = inline_template('<%= @data.kind_of?(Array) ? @data.first : @data %>')
+    $reverse_zone = inline_template("<%= require 'ipaddr'; IPAddr.new(ip).reverse[2..-1] %>")
+    $last_octet = inline_template("<%= @ip.split('.').split('.').last %>")
 
     dns::record::ptr { "${host}.${zone}":
-      host => $octet,
+      host => $last_octet,
       zone => $reverse_zone,
       data => "${host}.${zone}"
     }

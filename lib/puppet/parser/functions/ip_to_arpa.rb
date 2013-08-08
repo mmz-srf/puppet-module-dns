@@ -1,7 +1,11 @@
 require 'ipaddr'
 
 def convert(ip, mask)
-  IPAddr.new(ip).mask(mask).reverse.split('.')[1..-1].join('.')
+  IPAddr.new(ip).mask(mask).to_range.collect do|ip|
+    ip.to_s.split('.')[0..-2].join('.')
+  end.uniq.collect do |ip|
+    IPAddr.new(ip+'.0').reverse.split('.')[1..-1].join('.')
+  end
 end
 
 module Puppet::Parser::Functions
