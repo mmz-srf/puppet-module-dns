@@ -18,7 +18,7 @@ define dns::record::a (
 
   if $ptr {
     $ip = inline_template('<%= @data.kind_of?(Array) ? @data.first : @data %>')
-    $reverse_zone = inline_template("<%= require 'ipaddr'; IPAddr.new(ip).reverse[2..-1] %>")
+    $reverse_zone = inline_template("<%= require 'ipaddr'; IPAddr.new(ip).reverse.split('.')[1..-1].join('.') %>")
     $last_octet = inline_template("<%= @ip.split('.').last %>")
 
     dns::record::ptr { "${host}.${zone}":
