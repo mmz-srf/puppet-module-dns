@@ -9,17 +9,19 @@
 //
 
 options {
-        listen-on port 53 { 127.0.0.1; };
-        listen-on-v6 port 53 { ::1; };
+        listen-on port 53 { any; };
+        listen-on-v6 port 53 { any; };
         directory       "/var/named";
         dump-file       "/var/named/data/cache_dump.db";
         statistics-file "/var/named/data/named_stats.txt";
         memstatistics-file "/var/named/data/named_mem_stats.txt";
-        allow-query     { localhost; };
-        recursion yes;
+        allow-query     { any; };
+		recursion yes;
 
-        dnssec-enable yes;
-        dnssec-validation yes;
+		forwarders { 193.218.104.190; 193.218.103.253; };
+
+        dnssec-enable no;
+        dnssec-validation no;
         dnssec-lookaside auto;
 
         /* Path to ISC DLV key */
