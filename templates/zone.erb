@@ -1,6 +1,6 @@
 zone "<%= @zone %>" {
   type <%= @zone_type %>;
-<% if zone_notify -%>
+<% if @zone_notify -%>
   notify <%= @zone_notify %>;
 <% end -%>
   file "<%= @zone_file %>";

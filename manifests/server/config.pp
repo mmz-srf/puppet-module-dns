@@ -4,7 +4,7 @@ class dns::server::config {
     ensure => directory,
     owner  => $::dns::user_name,
     group  => $::dns::user_name,
-    mode   => 0755,
+    mode   => '0755',
     require => Class['dns::server::install'],
   }
 
@@ -12,7 +12,7 @@ class dns::server::config {
     ensure  => present,
     owner   => $::dns::user_name,
     group   => $::dns::user_name,
-    mode    => 0644,
+    mode    => '0644',
     content => template($::dns::named_conf_template),
     require => File["${::dns::conf_dir}"],
     notify  => Class['dns::server::service'],
@@ -24,7 +24,7 @@ class dns::server::config {
         ensure  => present,
         owner   => $::dns::user_name,
         group   => $::dns::user_name,
-        mode    => 0644,
+        mode    => '0644',
         content => template($::dns::named_conf_options_template),
         require => File["${::dns::conf_dir}"],
         notify  => Class['dns::server::service'],
@@ -35,7 +35,7 @@ class dns::server::config {
   concat { $dns::named_conf_local:
     owner   => $::dns::user_name,
     group   => $::dns::user_name,
-    mode    => 0644,
+    mode    => '0644',
     require => [
       Class['concat::setup'],
       Class['dns::server::install'],
