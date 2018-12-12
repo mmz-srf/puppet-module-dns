@@ -6,6 +6,7 @@ class dns::server::service {
     hasstatus  => true,
     hasrestart => true,
     enable     => true,
+    provider   => 'systemd',
     require    => Class['dns::server::config']
   }
 
